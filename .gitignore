@@ -1,0 +1,18 @@
+/terraform/
+
+# Ignore all files and directories named 'terraform' in any subdirectory
+**/terraform/
+
+# Ignore specific file at the root
+/.terraform.lock.hcl
+**/.terraform.lock.hcl
+# Ignore specific file in any subdirectory
+**/.terraform.tfstate.lock.info
+
+# If you want to ignore '.terraform' directories everywhere
+**/.terraform/
+
+*/terraform.tfstate
+**/terraform.tfstate
+*/terraform.tfstate.backup
+**/terraform.tfstate.backup
