@@ -14,7 +14,7 @@ resource "aws_cloudwatch_event_rule" "ec2_state_change" {
     "source" : ["aws.ec2"],
     "detail-type" : ["EC2 Instance State-change Notification"],
     "detail" : {
-      "state" : ["stopped", "terminated", "stopping", "shutting-down","started"], # specify the state changes you want to monitor
+      "state" : ["stopped", "terminated", "stopping", "shutting-down","running"], # specify the state changes you want to monitor
       "instance-id" : [aws_instance.primary_instance.id] # target specific instance
     }
   })
