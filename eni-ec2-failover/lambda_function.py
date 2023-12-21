@@ -21,19 +21,31 @@ def lambda_handler(event, context):
     # eni_id = event['resources'][0]
     print("event",event)
     try:
-        # Detach ENI from primary instance
+        # Describe the network interface to get the attachment ID
         response = ec2.describe_network_interfaces(NetworkInterfaceIds=[eni_id])
-        attachment = response['NetworkInterfaces'][0]['Attachment']
-        attachment_id = attachment['AttachmentId']
-        ec2.detach_network_interface(AttachmentId=attachment_id, Force=True)
+        if 'Attachment' in response['NetworkInterfaces'][0]:
+            attachment = response['NetworkInterfaces'][0]['Attachment']
+            attachment_id = attachment['AttachmentId']
 
-        # Attach ENI to standby instance
+            # Detach the ENI
+            ec2.detach_network_interface(AttachmentId=attachment_id, Force=True)
+            print(f"Detaching ENI {eni_id} with attachment ID {attachment_id}")
+
+            # Wait for ENI to be available
+            waiter = ec2.get_waiter('network_interface_available')
+            waiter.wait(NetworkInterfaceIds=[eni_id])
+            print(f"ENI {eni_id} is now available")
+        else:
+            print(f"ENI {eni_id} is already detached")
+
+        # Attach the ENI to the standby instance
         attach_response = ec2.attach_network_interface(
             NetworkInterfaceId=eni_id,
             InstanceId=instance_id,
-            DeviceIndex=1  # Update this as per your configuration
+            DeviceIndex=1
         )
-        print(f"ENI attached to standby instance: {attach_response}")
+        print(f"Attached ENI {eni_id} to instance {instance_id}")
+
     except Exception as e:
         print(f"Error: {str(e)}")
         raise e
