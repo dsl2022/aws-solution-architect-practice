@@ -12,7 +12,7 @@ def lambda_handler(event, context):
     # Get the state of the instance that triggered the Lambda and define the instance
     instance_state = event['detail']['state']
     instance_id=""
-    if instance_state == 'started':
+    if instance_state == 'running':
         instance_id = os.environ['PRIMARY_INSTANCE_ID']
     else:
         instance_id = os.environ['STANDBY_INSTANCE_ID']
