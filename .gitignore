@@ -2,6 +2,9 @@
 
 # Ignore all files and directories named 'terraform' in any subdirectory
 **/terraform/
+*.pem
+**/*.pem
+
 
 # Ignore specific file at the root
 /.terraform.lock.hcl
