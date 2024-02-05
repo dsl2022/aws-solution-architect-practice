@@ -5,7 +5,6 @@
 *.pem
 **/*.pem
 
-
 # Ignore specific file at the root
 /.terraform.lock.hcl
 **/.terraform.lock.hcl
