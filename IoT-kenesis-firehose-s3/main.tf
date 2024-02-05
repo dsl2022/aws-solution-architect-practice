@@ -12,6 +12,13 @@ resource "aws_s3_bucket" "example_bucket" {
   bucket = "example-bucket-for-iot-data"
 }
 
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.example_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 
 
 resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
